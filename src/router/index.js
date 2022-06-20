@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PhotosView from '../views/PhotosView.vue'
+import VideosView from '../components/VideosView'
 const routes = [
   {
     path: '/',
@@ -19,6 +20,11 @@ const routes = [
     path:'/photos',
     name:'photos',
     component:PhotosView
+  },
+  {
+    path:'/videos',
+    name:'videos',
+    component:VideosView
   }
 ]
 

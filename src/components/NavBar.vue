@@ -16,7 +16,7 @@
                         <router-link class="nav-link" to="/photos">Photos</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Videos</a>
+                        <router-link to="/videos" class=nav-link>Videos</router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Weather</a>
