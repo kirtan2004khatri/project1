@@ -23,17 +23,18 @@
 
             <!-- This is the notes code -->
             <div class="border border-success d-flex flex-column align-items-start px-0 m-sm-2 m-3"
-                style="width:18rem;height:14rem" v-for="items in notes">
+                style="width:18rem;height:14rem" v-for="items, key in notes">
+                <div class="text-bold bg-success text-white container-fluid d-flex p-1" :data-bs-toggle="toggler"
+                    data-bs-target="#exampleModal" @click="updtHandler(items,key)">{{ items[0] }}</div>
 
-                <div class="text-bold bg-success text-white container-fluid d-flex p-1" @click="updtBtnHandler(items)" :contenteditable="editable" ref="title">{{ items[0] }}</div>
-
-                <small class="p-2 text-start overflow-scroll container-fluid"
-                    style="font-size:10pt;height:inherit" @click="updtBtnHandler(items)"  :contenteditable="editable" ref="content">{{ items[1] }}</small>
+                <small class="p-2 text-start overflow-scroll container-fluid" style="font-size:10pt;height:inherit"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">{{ items[1] }}</small>
                 <div>
                 </div>
 
                 <div class="container-fluid border-top border-success p-0 d-flex justify-content-center">
-                    <button class="btn btn-sm btn-secondary d-block w-75 my-1" @click="delBtnHandler(items)">Delete</button>
+                    <button class="btn btn-sm btn-secondary d-block w-75 my-1"
+                        @click="delBtnHandler(items)">Delete</button>
                 </div>
 
             </div>
@@ -42,8 +43,27 @@
 
         </div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter the new title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" placeholder="Enter the new title here..."
+                        @blur="" v-model="newTitle">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Update tab -->
 </template>
-
+<!-- UPDATE REMAINING -->
 <script>
 import NavBar from '../components/NavBar.vue'
 export default {
@@ -51,7 +71,7 @@ export default {
         return {
             notes: [], tempNote: [],
             noteWatcher: '', noteTitle: '', showIptError: false, showContentError: false,
-            dataPresent:true,editable:false
+            dataPresent: true, editable: false, newTitle: '', newContent: '',toggler:"none"
         }
     },
     components: {
@@ -74,38 +94,39 @@ export default {
                 this.tempNote.push(this.noteTitle); this.tempNote.push(this.noteWatcher);
                 this.notes.push(this.tempNote); this.tempNote = [];
                 localStorage.setItem('notes', JSON.stringify(this.notes));
-                this.noteTitle='';this.noteWatcher=''
+                this.noteTitle = ''; this.noteWatcher = ''
                 this.dataAdder();
             }
         },
-        delBtnHandler(arr){
+        delBtnHandler(arr) {
             // this.notes=this.notes.filter(element=>{element!=arr,console.log(element)});
             // document.location.reload();
             console.log(arr);
-            this.notes=this.notes.filter(element=>element!=arr);
-            localStorage.setItem('notes',JSON.stringify(this.notes));
+            this.notes = this.notes.filter(element => element != arr);
+            localStorage.setItem('notes', JSON.stringify(this.notes));
         },
-        dataAdder(){
-            if(localStorage.getItem('notes')==null){
-            this.notes=[];
-            localStorage.setItem('notes',JSON.stringify(this.notes));
-        }
-        else if(JSON.parse(localStorage.getItem('notes')).length==0){
-            this.dataPresent=true
-        }
-        else{
-            this.notes=JSON.parse(localStorage.getItem('notes'));
-            this.dataPresent=false;
-        }
+        dataAdder() {
+            if (localStorage.getItem('notes') == null) {
+                this.notes = [];
+                localStorage.setItem('notes', JSON.stringify(this.notes));
+            }
+            else if (JSON.parse(localStorage.getItem('notes')).length == 0) {
+                this.dataPresent = true
+            }
+            else {
+                this.notes = JSON.parse(localStorage.getItem('notes'));
+                this.dataPresent = false;
+            }
         },
-        updtBtnHandler(item){
-            this.editable=true;
-            console.log(item);
-            console.log(this.$refs.title.target);
-            console.log(this.$refs.content);
+        updtHandler(arr,original_key) {
+            this.toggler='modal'
+            console.log(arr,this.notes[original_key]);
+        },
+        updater(value){
+
         }
     },
-    mounted(){
+    mounted() {
         this.dataAdder();
     },
 }

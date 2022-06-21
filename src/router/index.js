@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import PhotosView from '../views/PhotosView.vue'
 import VideosView from '../components/VideosView.vue'
 import NoteApp from '../components/NoteApp.vue'
+import WeatherView from '../components/WeatherView'
 const routes = [
   {
     path: '/',
@@ -26,10 +27,16 @@ const routes = [
     path:'/videos',
     name:'videos',
     component:VideosView
-  },{
+  },
+  {
     path:'/notes',
     name:'notes',
     component:NoteApp
+  },
+  {
+    path:'/weather',
+    name:'weather',
+    component:WeatherView
   }
 ]
 

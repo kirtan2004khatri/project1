@@ -20,7 +20,7 @@
                         <router-link to="/videos" class=nav-link>Videos</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Weather</a>
+                        <router-link to="/weather" class="nav-link">Weather</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/notes" class="nav-link">Notes</router-link>

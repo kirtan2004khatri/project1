@@ -8,24 +8,26 @@
             <button class="btn btn-success ms-2" @Click.prevent="searchHandler(pageNo)">Search</button>
         </div>
     </div>
-        <!-- <small class="d-sm-none d-block">I'm only visible in mobile devices</small> -->
+    <!-- <small class="d-sm-none d-block">I'm only visible in mobile devices</small> -->
     <!-- <PhotoSection :search="value"/> -->
     <div class="container-fluid mt-3 p-4">
 
         <small v-if="value">Click on the menu option of video to download it.</small>
 
 
-        <h2 v-if="value" class="p-4">Your images related to "{{ value }}"</h2>
+        <h2 v-if="value" class="p-4">Your videos related to "{{ value }}"</h2>
 
         <div class="d-flex flex-wrap border rounded container-fluid p-0" v-if="value">
 
             <div class="" v-for="items in video" :key="items">
 
-                <div v-for="links,key in items.video_files" class="mx-3 my-3">
+                <div v-for="links, key in items.video_files" class="mx-3 my-3">
                     <!-- <video  :height="links.height" :width="links.width"
                         controls :src="links.link" v-if="links.height==360"></video> -->
-                    <iframe v-if="key==0" :src="links.link" frameborder="1" height="280" width="560" class="d-sm-block d-none"></iframe>
-                    <iframe v-if="key==0" :src="links.link" frameborder="1" height="280" width="400" class="d-sm-noe d-block"></iframe>
+                    <iframe v-if="key == 0" :src="links.link" frameborder="1" height="280" width="560"
+                        class="d-sm-block d-none"></iframe>
+                    <iframe v-if="key == 0" :src="links.link" frameborder="1" height="280" width="400"
+                        class="d-sm-none d-block"></iframe>
                 </div>
 
             </div>
@@ -38,7 +40,23 @@
 
             <button class="btn btn-success" @Click="pageNo++; searchHandler(pageNo)">Next &gt;</button>
 
+           
         </div>
+
+         <!-- <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center bg-dark p-2 ">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><span class="page-link" @click="searchHandler(1)">1</span></li>
+                    <li class="page-item"><span class="page-link" @click="searchHandler(2)">2</span></li>
+                    <li class="page-item"><span class="page-link" @click="searchHandler(3)">3</span></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav> -->
+
 
     </div>
 
@@ -64,7 +82,7 @@ export default {
             this.value = this.watch;
             // this.watch = "";
             pageNo == 0 ? pageNo = 1 : pageNo--;
-            const response = await fetch(`https://api.pexels.com/videos/search?query=${this.value}&page=1&per_page=20`,
+            const response = await fetch(`https://api.pexels.com/videos/search?query=${this.value}&page=${pageNo}&per_page=27`,
                 {
                     method: "GET",
                     headers: {
@@ -76,7 +94,6 @@ export default {
             const data = await response.json();
             this.video = data;
             this.video = this.video.videos
-            console.log(this.video)
             return data;
         },
         imageOpener(link) {
