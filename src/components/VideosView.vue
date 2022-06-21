@@ -17,24 +17,21 @@
 
         <h2 v-if="value" class="p-4">Your videos related to "{{ value }}"</h2>
 
-        <div class="d-flex flex-wrap border rounded container-fluid p-0" v-if="value">
+        <div class="container d-flex flex-wrap justify-content-around border border-0 rounded container-fluid " v-if="value">
 
-            <div class="" v-for="items in video" :key="items">
+            <div class="my-2" v-for="items in video" :key="items">
 
                 <div v-for="links, key in items.video_files" class="mx-3 my-3">
                     <!-- <video  :height="links.height" :width="links.width"
                         controls :src="links.link" v-if="links.height==360"></video> -->
-                    <iframe v-if="key == 0" :src="links.link" frameborder="1" height="280" width="560"
-                        class="d-sm-block d-none"></iframe>
-                    <iframe v-if="key == 0" :src="links.link" frameborder="1" height="280" width="400"
-                        class="d-sm-none d-block"></iframe>
+                    <iframe v-if="key == 0" :src="links.link" frameborder="1" :style="{width:'20rem',height:'15rem'}"></iframe>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="container-fluid mt-2 bg-dark d-flex justify-content-between p-2" v-if="value">
+        <div class="container mt-2 bg-dark d-flex justify-content-between p-2" v-if="value">
 
             <button class="btn btn-success" @Click="pageNo--; searchHandler(pageNo)">&lt; Prev</button>
 

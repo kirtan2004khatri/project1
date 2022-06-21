@@ -12,20 +12,19 @@
         <button class="btn btn-outline-primary btn-sm mt-4" @click="addNotes">Add Note</button>
     </div>
     <!-- <h3 class="container d-sm-flex mt-2 px-sm-0 ">Your Notes</h3> -->
-    <div class="container d-flex justify-content-between mt-4 align-items-center">
+    <div class="container d-flex flex-sm-row flex-column justify-content-between mt-4 align-items-center">
         <h3>Your Notes</h3>
         <small>Click on content or title of notes to edit it....</small>
     </div>
-    <div class="container-fluid px-sm-3 py-sm-2 px-5 py-3 mt-1 border-top">
+    <div class="container px-sm-3 py-sm-2 px-5 py-3 mt-1 border-top">
         <h4 class="p-5" v-if="dataPresent">Nothing to see here please add notes....</h4>
-        <div class="container-fluid p-0 d-flex flex-wrap justify-content-around
-        w-75" v-if="!this.notes.length == 0">
+        <div class="container-fluid p-0 d-flex flex-wrap " v-if="!this.notes.length == 0">
 
             <!-- This is the notes code -->
-            <div class="border border-success d-flex flex-column align-items-start px-0 m-sm-2 m-3"
-                style="width:18rem;height:14rem" v-for="items, key in notes">
+            <div class="border border-success d-flex flex-column align-items-start px-0 ms-sm-5 mt-5 m-3"
+                style="width:18rem;height:12rem" v-for="items, key in notes">
                 <div class="text-bold bg-success text-white container-fluid d-flex p-1" :data-bs-toggle="toggler"
-                    data-bs-target="#exampleModal" @click="updtHandler(items,key)">{{ items[0] }}</div>
+                    data-bs-target="#exampleModal" @click="updtHandler(items, key)">{{ items[0] }}</div>
 
                 <small class="p-2 text-start overflow-scroll container-fluid" style="font-size:10pt;height:inherit"
                     data-bs-toggle="modal" data-bs-target="#exampleModal">{{ items[1] }}</small>
@@ -37,30 +36,40 @@
                         @click="delBtnHandler(items)">Delete</button>
                 </div>
 
+                <!-- This is the modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit the content and title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="title" class="text-start d-block p-2">New Title:</label>
+                                <input type="text" id="title" class="form-control"
+                                    placeholder="Enter the new title here..." @blur="" v-model="newTitle">
+                                <label for="content" class="text-start d-block p-2">New Content:</label>
+                                <textarea id="content" cols="30" rows="3" class="form-control"
+                                    placeholder="Enter the new content here..." v-model="newContent"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <small v-if="notemsg" class="me-auto text-wrap">Note updated successfully..!</small>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" @click="update(items,key)">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- <p v-for="items in notes">Title{{items[0]}} Content{{items[1]}}</p> -->
             <!-- THis is the note code end -->
 
         </div>
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Enter the new title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Enter the new title here..."
-                        @blur="" v-model="newTitle">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- Update tab -->
 </template>
 <!-- UPDATE REMAINING -->
@@ -71,7 +80,8 @@ export default {
         return {
             notes: [], tempNote: [],
             noteWatcher: '', noteTitle: '', showIptError: false, showContentError: false,
-            dataPresent: true, editable: false, newTitle: '', newContent: '',toggler:"none"
+            dataPresent: true, editable: false, newTitle: '', newContent: '', toggler: "none",
+            notemsg:false
         }
     },
     components: {
@@ -118,12 +128,18 @@ export default {
                 this.dataPresent = false;
             }
         },
-        updtHandler(arr,original_key) {
-            this.toggler='modal'
-            console.log(arr,this.notes[original_key]);
+        updtHandler(arr, original_key) {
+            this.newTitle = arr[0];
+            this.newContent = arr[1];
+            this.toggler = 'modal'
+            console.log(arr, this.notes[original_key]);
         },
-        updater(value){
-
+        update(arr,key) {
+            arr[0]=this.newTitle;
+            arr[1]=this.newContent;
+            this.notes[key]=arr;
+            localStorage.setItem('notes',JSON.stringify(this.notes));
+            this.notemsg=true;
         }
     },
     mounted() {

@@ -27,9 +27,9 @@
             size.</small>
         <h2 v-if="value" class="p-4">Your images related to "{{ value }}"</h2>
 
-        <div class="d-flex flex-wrap justify-content-around align-items-center px-2 border py-2 rounded" v-if="value">
-            <div class="" v-for="items in images" :key="items">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.small)"
+        <div class="container d-flex flex-wrap border rounded justify-content-around align-items-around" v-if="value">
+            <div class="mx-2 my-5" v-for="items in images" :key="items">
+                <!-- <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.small)"
                     v-if="mod == 'small'">
                 <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.medium)"
                     v-if="mod == 'medium'">
@@ -40,8 +40,10 @@
                 <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.large2x)"
                     v-if="mod == 'large2x'">
                 <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.landscape)"
-                    v-if="mod == 'landscape'">
+                    v-if="mod == 'landscape'"> -->
                 <!-- style="width:200px;height:150px" -->
+                <div class="border" :style="{backgroundImage:`url(${items.src.small})`,width:'18rem',height:'15rem',
+                backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}"></div>
             </div>
         </div>
 
