@@ -8,10 +8,12 @@
             <button class="btn btn-success ms-2" @Click.prevent="searchHandler(pageNo)">Search</button>
         </div>
     </div>
+        <!-- <small class="d-sm-none d-block">I'm only visible in mobile devices</small> -->
     <!-- <PhotoSection :search="value"/> -->
     <div class="container-fluid mt-3 p-4">
 
         <small v-if="value">Click on the menu option of video to download it.</small>
+
 
         <h2 v-if="value" class="p-4">Your images related to "{{ value }}"</h2>
 
@@ -22,7 +24,8 @@
                 <div v-for="links,key in items.video_files" class="mx-3 my-3">
                     <!-- <video  :height="links.height" :width="links.width"
                         controls :src="links.link" v-if="links.height==360"></video> -->
-                    <iframe v-if="key==0" :src="links.link" frameborder="1" height="280" width="560"></iframe>
+                    <iframe v-if="key==0" :src="links.link" frameborder="1" height="280" width="560" class="d-sm-block d-none"></iframe>
+                    <iframe v-if="key==0" :src="links.link" frameborder="1" height="280" width="400" class="d-sm-noe d-block"></iframe>
                 </div>
 
             </div>

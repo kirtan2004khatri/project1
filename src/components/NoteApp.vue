@@ -1,37 +1,112 @@
 <template>
     <NavBar />
     <h1 class="text-center mt-4">Make your notes here..</h1>
-    <div class="container p-4  d-flex flex-column justify-content-start align-items-start">
+    <div class="container p-sm-4  d-flex flex-column justify-content-start align-items-start p-5">
         <label for="notes" class="form-label">Start making note's....</label>
-        <input type="text" class="form-control"  placeholder="Give your note a title" v-model="noteTitle">
-        <textarea class="form-control mt-2" id="notes" cols="30" rows="5" placeholder="Write your notes here....." v-model="noteWatcher"></textarea>
+        <input type="text" class="form-control" placeholder="Give your note a title" v-model="noteTitle">
+        <small class="text-danger" v-if="showIptError">Note title can't be empty</small>
+        <textarea class="form-control mt-2" id="notes" cols="30" rows="5" placeholder="Write your notes here....."
+            v-model="noteWatcher"></textarea>
+        <small class="text-danger" v-if="showContentError">Note content can't be empty</small>
+
         <button class="btn btn-outline-primary btn-sm mt-4" @click="addNotes">Add Note</button>
     </div>
-    <h3 class="container d-flex mt-2">Your Notes</h3>
-    <div class="container p-2 mt-1 border-top">
-        <h4 class="p-5">Nothing to see here please add notes....</h4>
-        <div class="container-fluid border">
+    <!-- <h3 class="container d-sm-flex mt-2 px-sm-0 ">Your Notes</h3> -->
+    <div class="container d-flex justify-content-between mt-4 align-items-center">
+        <h3>Your Notes</h3>
+        <small>Click on content or title of notes to edit it....</small>
+    </div>
+    <div class="container-fluid px-sm-3 py-sm-2 px-5 py-3 mt-1 border-top">
+        <h4 class="p-5" v-if="dataPresent">Nothing to see here please add notes....</h4>
+        <div class="container-fluid p-0 d-flex flex-wrap justify-content-around
+        w-75" v-if="!this.notes.length == 0">
+
+            <!-- This is the notes code -->
+            <div class="border border-success d-flex flex-column align-items-start px-0 m-sm-2 m-3"
+                style="width:18rem;height:14rem" v-for="items in notes">
+
+                <div class="text-bold bg-success text-white container-fluid d-flex p-1" @click="updtBtnHandler(items)" :contenteditable="editable" ref="title">{{ items[0] }}</div>
+
+                <small class="p-2 text-start overflow-scroll container-fluid"
+                    style="font-size:10pt;height:inherit" @click="updtBtnHandler(items)"  :contenteditable="editable" ref="content">{{ items[1] }}</small>
+                <div>
+                </div>
+
+                <div class="container-fluid border-top border-success p-0 d-flex justify-content-center">
+                    <button class="btn btn-sm btn-secondary d-block w-75 my-1" @click="delBtnHandler(items)">Delete</button>
+                </div>
+
+            </div>
+            <!-- <p v-for="items in notes">Title{{items[0]}} Content{{items[1]}}</p> -->
+            <!-- THis is the note code end -->
 
         </div>
     </div>
 </template>
 
 <script>
-    import NavBar from '../components/NavBar.vue'
-    export default{
-        data(){
-            return{
-                notes:[],tempNote:[],
-                noteWatcher:'',noteTitle:''
-            }
-        },
-        components:{
-            NavBar
-        },
-        methods:{
-            addNotes(){
-                this.tempNote.push()
-            }
+import NavBar from '../components/NavBar.vue'
+export default {
+    data() {
+        return {
+            notes: [], tempNote: [],
+            noteWatcher: '', noteTitle: '', showIptError: false, showContentError: false,
+            dataPresent:true,editable:false
         }
-    }
+    },
+    components: {
+        NavBar
+    },
+    methods: {
+        addNotes() {
+            console.log(this.tempNote)
+            if (this.noteWatcher == '' && this.noteTitle == '') {
+                this.showIptError = true; this.showContentError = true
+            }
+            else if (this.noteWatcher == '') {
+                this.showContentError = true
+            }
+            else if (this.noteTitle == '') {
+                this.showIptError = true
+            }
+            else {
+                this.showIptError = false; this.showContentError = false
+                this.tempNote.push(this.noteTitle); this.tempNote.push(this.noteWatcher);
+                this.notes.push(this.tempNote); this.tempNote = [];
+                localStorage.setItem('notes', JSON.stringify(this.notes));
+                this.noteTitle='';this.noteWatcher=''
+                this.dataAdder();
+            }
+        },
+        delBtnHandler(arr){
+            // this.notes=this.notes.filter(element=>{element!=arr,console.log(element)});
+            // document.location.reload();
+            console.log(arr);
+            this.notes=this.notes.filter(element=>element!=arr);
+            localStorage.setItem('notes',JSON.stringify(this.notes));
+        },
+        dataAdder(){
+            if(localStorage.getItem('notes')==null){
+            this.notes=[];
+            localStorage.setItem('notes',JSON.stringify(this.notes));
+        }
+        else if(JSON.parse(localStorage.getItem('notes')).length==0){
+            this.dataPresent=true
+        }
+        else{
+            this.notes=JSON.parse(localStorage.getItem('notes'));
+            this.dataPresent=false;
+        }
+        },
+        updtBtnHandler(item){
+            this.editable=true;
+            console.log(item);
+            console.log(this.$refs.title.target);
+            console.log(this.$refs.content);
+        }
+    },
+    mounted(){
+        this.dataAdder();
+    },
+}
 </script>
