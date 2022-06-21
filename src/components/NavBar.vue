@@ -1,7 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand fs-3" href="#">{{title}}</a>
+            <!-- <a class="navbar-brand fs-3" href="#">{{title}}</a> -->
+            <router-link class="navbar-brand fs-3" to="/">{{title}}</router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -22,7 +23,7 @@
                         <a class="nav-link" href="#">Weather</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Notes</a>
+                        <router-link to="/notes" class="nav-link">Notes</router-link>
                     </li>
                 </ul>
             </div>

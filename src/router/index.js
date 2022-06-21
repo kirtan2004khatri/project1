@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PhotosView from '../views/PhotosView.vue'
-import VideosView from '../components/VideosView'
+import VideosView from '../components/VideosView.vue'
+import NoteApp from '../components/NoteApp.vue'
 const routes = [
   {
     path: '/',
@@ -25,6 +26,10 @@ const routes = [
     path:'/videos',
     name:'videos',
     component:VideosView
+  },{
+    path:'/notes',
+    name:'notes',
+    component:NoteApp
   }
 ]
 

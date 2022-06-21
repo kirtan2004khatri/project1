@@ -17,6 +17,7 @@
         <span class="rounded-pill bg-secondary mx-2 px-3 py-1 text-white" v-if="value" @Click="modChanger('large2x')">Extra large</span><br><br>
         <small v-if="value">Select size from given options and then click on any image to get the image of desired size.</small>
         <h2 v-if="value" class="p-4">Your images related to "{{value}}"</h2>
+
         <div class="d-flex flex-wrap justify-content-around align-items-center px-2 border py-2 rounded" v-if="value">
             <div class="" v-for="items in images" :key="items">
                 <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.small)" v-if="mod=='small'" >
@@ -28,6 +29,7 @@
                 <!-- style="width:200px;height:150px" -->
             </div>
         </div>
+        
         <div class="container-fluid mt-2 bg-dark d-flex justify-content-between p-2" v-if="value">
             <button class="btn btn-success" @Click="pageNo--;searchHandler(pageNo)">&lt; Prev</button>
             <button class="btn btn-success" @Click="pageNo++;searchHandler(pageNo)">Next &gt;</button>
