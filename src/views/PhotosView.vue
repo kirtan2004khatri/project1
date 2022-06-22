@@ -9,41 +9,19 @@
         </div>
     </div>
     <!-- <PhotoSection :search="value"/> -->
-    <div class="container-fluid mt-3 p-4">
-        <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
-            <span class="rounded-pill bg-secondary px-3 py-1 text-white" v-if="value"
-                @Click="modChanger('landscape')">Landscape</span>
-            <span class="rounded-pill bg-secondary px-3 py-1 text-white" v-if="value"
-                @Click="modChanger('medium')">medium</span>
-            <span class="rounded-pill bg-secondary mx-2 px-3 py-1 text-white" v-if="value"
-                @Click="modChanger('original')">original</span>
-            <span class="rounded-pill bg-secondary px-3 py-1 text-white" v-if="value"
-                @Click="modChanger('large')">large</span>
-            <span class="rounded-pill bg-secondary px-3 py-1 text-white" v-if="value"
-                @Click="modChanger('large2x')">Extra large</span>
-        </div>
-        <br><br>
+    <div class="container-fluid mt-3 p-3">
         <small v-if="value">Select size from given options and then click on any image to get the image of desired
             size.</small>
         <h2 v-if="value" class="p-4">Your images related to "{{ value }}"</h2>
 
-        <div class="container d-flex flex-wrap border rounded justify-content-around align-items-around" v-if="value">
-            <div class="mx-2 my-5" v-for="items in images" :key="items">
-                <!-- <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.small)"
-                    v-if="mod == 'small'">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.medium)"
-                    v-if="mod == 'medium'">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.original)"
-                    v-if="mod == 'original'">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.large)"
-                    v-if="mod == 'large'">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.large2x)"
-                    v-if="mod == 'large2x'">
-                <img :src="items.src.small" class="img-fluid mx-2 my-2" @Click="imageOpener(items.src.landscape)"
-                    v-if="mod == 'landscape'"> -->
-                <!-- style="width:200px;height:150px" -->
-                <div class="border" :style="{backgroundImage:`url(${items.src.small})`,width:'18rem',height:'15rem',
-                backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center'}"></div>
+        <div class="container d-flex flex-wrap border border-0 rounded justify-content-center align-items-center"
+            v-if="value">
+            <div class="mx-2 my-2" v-for="items in images" :key="items">
+                <div class="border" :style="{
+                    backgroundImage: `url(${items.src.medium})`, width: '18rem', height: '15rem',
+                    backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'
+                }"
+                    @click="imageOpener(items.src)" data-bs-toggle="modal" data-bs-target="#exampleModal"></div>
             </div>
         </div>
 
@@ -53,6 +31,27 @@
         </div>
     </div>
     <h3 v-if="value == ''" class="p-5">Nothing to see here....</h3>
+    <!-- Image size selector -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select size of image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column gap-1 justify-content-center align-items-center modal-body">
+                        <button class="btn btn-secondary d-block w-50" @click="imageViewer('small')">Small</button>
+                        <button class="btn btn-secondary d-block w-50" @click="imageViewer('original')">original</button>
+                        <button class="btn btn-secondary d-block w-50" @click="imageViewer('large')">large</button>
+                        <button class="btn btn-secondary d-block w-50" @click="imageViewer('large2x')">Extra large</button>
+                        <button class="btn btn-secondary d-block w-50" @click="imageViewer('landscape')">Landscape</button>
+                </div>
+                <div class="modal-footer">
+                    <small class="mx-auto">Click on any button to see and download image of desired size...</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import NavBar from '../components/NavBar.vue'
@@ -60,7 +59,7 @@ import PhotoSection from '../components/PhotoSection.vue'
 export default {
     data() {
         return {
-            watch: "", value: "", images: [], mod: "small", pageNo: 1
+            watch: "", value: "", images: [], mod: "small", pageNo: 1,onClickArray:[]
         }
     },
     components: {
@@ -86,11 +85,19 @@ export default {
             const data = await response.json();
             this.images = data;
             this.images = this.images.photos
-            console.log(data)
+            // console.log(data)
             return data;
         },
         imageOpener(link) {
-            window.open(link)
+            this.onClickArray=link;
+            // console.log(this.onClickArray);
+        },
+        imageViewer(size){
+            if(size=='small')window.open(this.onClickArray.small,'_blank')
+            if(size=='original')window.open(this.onClickArray.original,'_blank')
+            if(size=='large')window.open(this.onClickArray.large,'_blank')
+            if(size=='large2x')window.open(this.onClickArray.large2x,'_blank')
+            if(size=='landscape')window.open(this.onClickArray.landscape,'_blank')
         },
         modChanger(mod) {
             this.mod = mod;

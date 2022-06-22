@@ -4,6 +4,7 @@ import PhotosView from '../views/PhotosView.vue'
 import VideosView from '../components/VideosView.vue'
 import NoteApp from '../components/NoteApp.vue'
 import WeatherView from '../components/WeatherView'
+import ErrorPage from '../views/ErrorPage.vue'
 const routes = [
   {
     path: '/',
@@ -37,6 +38,11 @@ const routes = [
     path:'/weather',
     name:'weather',
     component:WeatherView
+  },
+  {
+    path:'/:catchAll(.*)',
+    name:'404',
+    component:ErrorPage
   }
 ]
 

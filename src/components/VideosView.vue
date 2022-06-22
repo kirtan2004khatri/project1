@@ -17,43 +17,26 @@
 
         <h2 v-if="value" class="p-4">Your videos related to "{{ value }}"</h2>
 
-        <div class="container d-flex flex-wrap justify-content-around border border-0 rounded container-fluid " v-if="value">
+        <div class="container d-flex flex-wrap justify-content-center align-items-center container-fluid p-0 border border-0" v-if="value">
 
-            <div class="my-2" v-for="items in video" :key="items">
+            <div class="ms-sm-2" v-for="items in video" :key="items">
 
-                <div v-for="links, key in items.video_files" class="mx-3 my-3">
-                    <!-- <video  :height="links.height" :width="links.width"
-                        controls :src="links.link" v-if="links.height==360"></video> -->
-                    <iframe v-if="key == 0" :src="links.link" frameborder="1" :style="{width:'20rem',height:'15rem'}"></iframe>
+                <div v-for="links, key in items.video_files" class="ms-2 my-1">
+                    <iframe v-if="key == 0" :src="links.link" frameborder="1" class="rounded" :style="{width:'18rem',height:'15rem'}"></iframe>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="container mt-2 bg-dark d-flex justify-content-between p-2" v-if="value">
+        <div class="container mt-2 d-flex justify-content-between p-2" v-if="value">
 
-            <button class="btn btn-success" @Click="pageNo--; searchHandler(pageNo)">&lt; Prev</button>
+            <button class="btn btn-outline-success" @Click="pageNo--; searchHandler(pageNo)">&lt; Prev</button>
 
-            <button class="btn btn-success" @Click="pageNo++; searchHandler(pageNo)">Next &gt;</button>
+            <button class="btn btn-outline-success" @Click="pageNo++; searchHandler(pageNo)">Next &gt;</button>
 
            
         </div>
-
-         <!-- <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center bg-dark p-2 ">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item"><span class="page-link" @click="searchHandler(1)">1</span></li>
-                    <li class="page-item"><span class="page-link" @click="searchHandler(2)">2</span></li>
-                    <li class="page-item"><span class="page-link" @click="searchHandler(3)">3</span></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav> -->
-
 
     </div>
 

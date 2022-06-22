@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped> 
 .imgBox {
     height: 200px;
 }
